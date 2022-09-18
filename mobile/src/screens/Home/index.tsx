@@ -21,6 +21,7 @@ export function Home() {
   }
 
   useEffect(() => {
+    // colocar o ip da máquina no localhost
     fetch('http://192.168.29.2:3333/games')
       .then(response => response.json())
       .then(data => {

@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { DuoCard, DuoCardProps } from '../../components/DuoCard';
+import { DuoMatchModal } from '../../components/DuoMatchModal';
 import { Background } from '../../components/Background';
 import { Heading } from '../../components/Heading';
 
@@ -18,6 +19,7 @@ import { styles } from './styles';
 
 export function Game() {
   const [duos, setDuos] = useState<DuoCardProps[]>([]);
+  const [duoSelected, setDuoSelected] = useState('')
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -27,8 +29,15 @@ export function Game() {
     navigation.goBack();
   }
 
+  // colocar ip da sua máquina no localhost
+  async function getDiscordUser(adsId: string) {
+    fetch(`http://localhost/ads/${adsId}/discord`)
+      .then(response => response.json())
+      .then(data => setDuoSelected(data.discord));
+  }
+
   useEffect(() => {
-    fetch(`http://192.168.29.2:3333/games/${game.id}/ads`)
+    fetch(`http://localhost/games/${game.id}/ads`)
       .then(response => response.json())
       .then(data => { setDuos(data) })
   })
@@ -76,7 +85,7 @@ export function Game() {
           renderItem={({ item }) => (
             <DuoCard
               data={item}
-              onConnect={() => { }}
+              onConnect={() => getDiscordUser(item.id)}
             />
           )}
           ListEmptyComponent={() => (
@@ -84,6 +93,12 @@ export function Game() {
               Não há anúncios para este jogo.
             </Text>
           )}
+        />
+
+        <DuoMatchModal
+          visible={duoSelected.length > 0}
+          discord={duoSelected}
+          onClose={() => setDuoSelected('')}
         />
       </SafeAreaView>
     </Background>

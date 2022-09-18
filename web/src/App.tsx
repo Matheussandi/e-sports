@@ -8,6 +8,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 
 import './styles/main.css';
 import { ModalPostAd } from './components/ModalPostAd';
+import axios from 'axios';
 
 interface IGame {
   id: string;
@@ -22,11 +23,9 @@ export default function App() {
   const [games, setGames] = useState<IGame[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:3333/games')
-      .then(response => response.json())
-      .then(data => {
-        setGames(data)
-      })
+    axios('http://localhost:3333/games').then(res => {
+      setGames(res.data)
+    })
   }, [])
 
   return (
