@@ -31,13 +31,13 @@ export function Game() {
 
   // colocar ip da sua máquina no localhost
   async function getDiscordUser(adsId: string) {
-    fetch(`http://localhost/ads/${adsId}/discord`)
+    fetch(`http://localhost:3333/ads/${adsId}/discord`)
       .then(response => response.json())
       .then(data => setDuoSelected(data.discord));
   }
 
   useEffect(() => {
-    fetch(`http://localhost/games/${game.id}/ads`)
+    fetch(`http://localhost:3333/games/${game.id}/ads`)
       .then(response => response.json())
       .then(data => { setDuos(data) })
   })
