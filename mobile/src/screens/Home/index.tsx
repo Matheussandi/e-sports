@@ -1,7 +1,7 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { Image, FlatList } from 'react-native';
 import { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 import logoImg from '../../assets/logo-nlw-esports.png';
 
@@ -22,7 +22,7 @@ export function Home() {
 
   useEffect(() => {
     // colocar o ip da máquina no localhost
-    fetch('http://192.168.29.2:3333/games')
+    fetch('http://localhost:3333/games')
       .then(response => response.json())
       .then(data => {
         setGames(data)

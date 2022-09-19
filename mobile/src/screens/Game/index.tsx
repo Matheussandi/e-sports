@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useEffect, useState } from 'react';
 
 import { DuoCard, DuoCardProps } from '../../components/DuoCard';
 import { DuoMatchModal } from '../../components/DuoMatchModal';
