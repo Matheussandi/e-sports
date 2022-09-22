@@ -9,11 +9,8 @@ import { ModalPostAd } from './components/ModalPostAd';
 import { GameBanner } from './components/GameBanner';
 import * as Dialog from '@radix-ui/react-dialog';
 
-import { useKeenSlider } from 'keen-slider/react' 
-import 'keen-slider/keen-slider.min.css'
-
+import { Slider, SliderProps, Slide } from './components/Slider';
 import './styles/main.css';
-import { SliderGames } from './components/SliderGames';
 
 interface IGame {
   id: string;
@@ -26,10 +23,21 @@ interface IGame {
 
 export default function App() {
   const [games, setGames] = useState<IGame[]>([]);
-  const [ref] = useKeenSlider<HTMLDivElement>({
-    slides: { perView: 6},
+
+  const settings: SliderProps = {
+    spaceBetween: 12,
+    slidesPerView: 2,
+    /* navigation: true, */
     loop: false,
-  });
+    breakpoints: {
+      768: {
+        slidesPerView: 4,
+      },
+      1024: {
+        slidesPerView: 6,
+      },
+  },
+  }
 
   useEffect(() => {
     axios('http://localhost:3333/games').then(res => {
@@ -42,11 +50,26 @@ export default function App() {
       <div className="max-w-[1344px] mx-auto flex flex-col items-center mt-20">
         <img src={logoImg} alt="" />
 
-        <h1 className="text-6xl text-white font-black mt-20">
+        <h1 className="text-4xl text-white font-black mt-20 md:text-6xl">
           Seu <span className="text-transparent bg-nlw-gradient bg-clip-text">duo</span> está aqui
         </h1>
 
-        <SliderGames />
+        <div className='mt-16 max-w-sm md:max-w-3xl lg:max-w-6xl px-12'>
+          <Slider settings={settings}>
+            {games.map((game) => (
+              <Slide key={game.title}>
+                <div className="relative rounded">
+                  <GameBanner
+                    key={game.id}
+                    title={game.title}
+                    bannerUrl={game.bannerUrl}
+                    adsCount={game._count.ads}
+                  />
+                </div>
+              </Slide>
+            ))}
+          </Slider>
+        </div>
 
         <Dialog.Root>
           <CreatedAtBanner />
