@@ -9,13 +9,19 @@ import { CaretDown, Check, GameController } from 'phosphor-react';
 import { Input } from './Form/Input';
 import { useEffect, useState, FormEvent } from 'react';
 import axios from 'axios';
+import { GameProps } from '../App';
 
 interface IGame {
     id: string;
     title: string;
 }
 
-export function ModalPostAd() {
+interface Props {
+    game: GameProps;
+    handleClose: () => void;
+}
+
+export function PostAdModal() {
     const [games, setGames] = useState<IGame[]>([]);
     const [weekDays, setWeekDays] = useState<string[]>([]);
     const [useVoiceChannel, setUseVoiceChannel] = useState(false);
