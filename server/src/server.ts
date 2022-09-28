@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 
-
 import { convertHourStringToMinutes } from './utils/convertHourStringToMinutes';
 import { convertMinutesToHourString } from './utils/convertMinutesToHourString';
 
@@ -28,7 +27,7 @@ app.get('/games', async (req, res) => {
 })
 
 app.post('/games/:id/ads', async (req, res) => {
-    const gameId = req.params.id;
+    const gameId: string = req.params.id;
     const body = req.body;
 
     try {
@@ -53,8 +52,6 @@ app.post('/games/:id/ads', async (req, res) => {
 app.get('/games/:id/ads', async (req, res) => {
     const gameId = req.params.id;
 
-    // falta validar o ID do game
-    
     try {
         const ads = await prisma.ad.findMany({
             select: {
@@ -73,7 +70,7 @@ app.get('/games/:id/ads', async (req, res) => {
                 createdAt: 'desc',
             }
         });
-    
+
         return res.status(200).json(ads.map(ad => {
             return {
                 ...ad,
@@ -90,19 +87,22 @@ app.get('/games/:id/ads', async (req, res) => {
 app.get('/ads/:id/discord', async (req, res) => {
     const adId = req.params.id;
 
-    // falta validar ID do ads
+    try {
+        const ad = await prisma.ad.findUniqueOrThrow({
+            select: {
+                discord: true,
+            },
+            where: {
+                id: adId,
+            }
 
-    const ad = await prisma.ad.findUniqueOrThrow({
-        select: {
-            discord: true,
-        },
-        where: {
-            id: adId,
-        }
+        })
 
-    })
+        return res.status(200).json(ad);
+    } catch (error) {
+        return res.status(400).json({ error: "Anúncio inválido" });
+    }
 
-    return res.status(200).json(ad);
 })
 
 app.listen('3333', () => {
