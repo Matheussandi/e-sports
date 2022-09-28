@@ -1,15 +1,17 @@
+import { useEffect, useState, FormEvent } from 'react';
+
+import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Select from '@radix-ui/react-select';
 import { Label } from '@radix-ui/react-label';
-import * as ToggleGroup from '@radix-ui/react-toggle-group';
 
-import { CaretDown, Check, GameController } from 'phosphor-react';
+import { CaretDown, Check, GameController, X } from 'phosphor-react';
 
 import { Input } from './Form/Input';
-import { useEffect, useState, FormEvent } from 'react';
-import axios from 'axios';
 import { GameProps } from '../App';
+
+import axios from 'axios';
 
 interface IGame {
     id: string;
@@ -25,6 +27,7 @@ export function PostAdModal() {
     const [games, setGames] = useState<IGame[]>([]);
     const [weekDays, setWeekDays] = useState<string[]>([]);
     const [useVoiceChannel, setUseVoiceChannel] = useState(false);
+    const [userDiscord, setUserDiscord] = useState<string>('')
 
     useEffect(() => {
         axios('http://localhost:3333/games').then(res => {
@@ -44,12 +47,32 @@ export function PostAdModal() {
             return;
         }
 
+        if (data.name.toString().length > 12) {
+            alert("Nome com muitos caracteres!");
+            return;
+        }
+
+        if (userDiscord.length > 20 || userDiscord.indexOf('#') === -1) {
+            alert("Discord inválido!");
+            return;
+        }
+
+        if (weekDays.length > 4) {
+            alert("Só é possível registrar no máximo 4 dias.");
+            return;
+        }
+
+        if (data.yearsPlaying.toString().length > 2) {
+            alert("Tempo de jogo inválido!");
+            return;
+        }
+
         try {
             await axios.post(`http://localhost:3333/games/${data.game}/ads`, {
                 name: data.name,
                 yearsPlaying: Number(data.yearsPlaying),
                 discord: data.discord,
-                weekDays: weekDays.map(Number),
+                weekDays: weekDays.map(String),
                 hourStart: data.hourStart,
                 hourEnd: data.hourEnd,
                 useVoiceChannel: useVoiceChannel,
@@ -67,19 +90,26 @@ export function PostAdModal() {
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-black/60 inset-0 fixed" />
 
-                <Dialog.Content className="fixed bg-[#2A2634] py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[480px] shadow-lg shadow-black/25">
-                    <Dialog.Title className="text-3xl font-black">Publique um anúncio</Dialog.Title>
+                <Dialog.Content className="fixed bg-[#2A2634] py-4 px-12 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[480px] shadow-lg shadow-black/25">
+                    <div className='relative'>
+                        <Dialog.Title className="text-3xl font-black">Publique um anúncio</Dialog.Title>
+
+                        <div className='absolute top-0 right-0'>
+                            <Dialog.Close>
+                                <X />
+                            </Dialog.Close>
+                        </div>
+                    </div>
 
                     <form onSubmit={handleCreateAd} className="mt-8 flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
-                            {/* <label htmlFor="game" className="font-semibold">Qual o game?</label> */}
                             <Label htmlFor="game" className="font-semibold">Qual o game?</Label>
                             <Select.Root name="game">
                                 <Select.Trigger className="bg-zinc-900 py-3 px-4 rounded text-sm flex justify-between">
                                     <Select.Value className="text-zinc-500" placeholder="Selecione o game que deseja jogar" />
                                     <CaretDown size={20} />
 
-                                    <Select.Content className="bg-zinc-900 py-3 px-6 rounded text-sm mt-5 flex text-start">
+                                    <Select.Content className="bg-zinc-900 py-3 px-6 rounded text-sm mt-6 -ml-4 flex text-start">
                                         {
                                             games.map(game => {
                                                 return (
@@ -92,8 +122,6 @@ export function PostAdModal() {
                                     </Select.Content>
                                 </Select.Trigger>
                             </Select.Root>
-                            {/* <Input id="game" placeholder="Selecione o game que deseja jogar" /> */}
-
                         </div>
 
                         <div className="flex flex-col gap-2">
@@ -108,82 +136,90 @@ export function PostAdModal() {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="discord">Qual seu Discord?</label>
-                                <Input name="discord" id="discord" placeholder="Usuario#0000" />
+                                <Input
+                                    name="discord"
+                                    id="discord"
+                                    placeholder="Usuario#0000"
+                                    value={userDiscord}
+                                    onChange={(e) =>
+                                        setUserDiscord(e.target.value)
+                                    }
+                                />
                             </div>
                         </div>
 
-                        <div className="flex gap-6">
+                        <div className="flex">
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="weekDays">Quando costuma jogar?</label>
                                 <ToggleGroup.Root
                                     type="multiple"
-                                    className="grid grid-cols-4 gap-2"
+                                    className="flex gap-2 center"
                                     value={weekDays}
                                     onValueChange={setWeekDays}
                                 >
                                     <ToggleGroup.Item
-                                        value="0"
+                                        value="Dom"
                                         title="Domingo"
-                                        className={`w-8 h-8 rounded ${weekDays.includes('0') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                        className={`p-2 rounded ${weekDays.includes('Dom') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                     >
-                                        D
+                                        Dom
                                     </ToggleGroup.Item>
 
                                     <ToggleGroup.Item
-                                        value="1"
+                                        value="Seg"
                                         title="Segunda"
-                                        className={`w-8 h-8 rounded ${weekDays.includes('1') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                        className={`p-2 rounded ${weekDays.includes('Seg') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                     >
-                                        S
+                                        Seg
                                     </ToggleGroup.Item>
 
                                     <ToggleGroup.Item
-                                        value="2"
+                                        value="Ter"
                                         title="Terça"
-                                        className={`w-8 h-8 rounded ${weekDays.includes('2') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                        className={`p-2 rounded ${weekDays.includes('Ter') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                     >
-                                        T
+                                        Ter
                                     </ToggleGroup.Item>
 
                                     <ToggleGroup.Item
-                                        value="3"
+                                        value="Qua"
                                         title="Quarta"
-                                        className={`w-8 h-8 rounded ${weekDays.includes('3') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                        className={`p-2 rounded ${weekDays.includes('Qua') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                     >
-                                        Q
+                                        Qua
                                     </ToggleGroup.Item>
 
                                     <ToggleGroup.Item
-                                        value="4"
+                                        value="Qui"
                                         title="Quinta"
-                                        className={`w-8 h-8 rounded ${weekDays.includes('4') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                        className={`p-2 rounded ${weekDays.includes('Qui') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                     >
-                                        Q
+                                        Qui
                                     </ToggleGroup.Item>
 
                                     <ToggleGroup.Item
-                                        value="5"
+                                        value="Sex"
                                         title="Sexta"
-                                        className={`w-8 h-8 rounded ${weekDays.includes('5') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                        className={`p-2 rounded ${weekDays.includes('Sex') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                     >
-                                        S
+                                        Sex
                                     </ToggleGroup.Item>
 
                                     <ToggleGroup.Item
-                                        value="6"
+                                        value="Sab"
                                         title="Sábado"
-                                        className={`w-8 h-8 rounded ${weekDays.includes('6') ? 'bg-violet-500' : 'bg-zinc-900'}`}
+                                        className={`p-2 rounded ${weekDays.includes('Sab') ? 'bg-violet-500' : 'bg-zinc-900'}`}
                                     >
-                                        S
+                                        Sab
                                     </ToggleGroup.Item>
                                 </ToggleGroup.Root>
                             </div>
-                            <div className="flex flex-col gap-2 flex-1">
-                                <label htmlFor="discord">Qual horário do dia?</label>
-                                <div className="grid grid-cols-2 gap-2">
-                                    <Input name="hourStart" id="hourStart" type="time" placeholder="De" />
-                                    <Input name="hourEnd" id="hourEnd" type="time" placeholder="Até" />
-                                </div>
+                        </div>
+                        <div className="flex flex-col gap-2 flex-1">
+                            <label htmlFor="discord">Qual horário do dia?</label>
+                            <div className="grid grid-cols-2 gap-2">
+                                <Input name="hourStart" id="hourStart" type="time" placeholder="De" />
+                                <Input name="hourEnd" id="hourEnd" type="time" placeholder="Até" />
                             </div>
                         </div>
 

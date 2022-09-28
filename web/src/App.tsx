@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import ReactLoading from 'react-loading';
 
 import axios from 'axios';
 
@@ -11,11 +12,10 @@ import { GameModal } from './components/GameModal';
 
 import * as Dialog from '@radix-ui/react-dialog';
 
-import { Slider, SliderProps, Slide } from './components/Slider';
-import './styles/main.css';
-
-import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
+
+import './styles/main.css';
 
 export interface GameProps {
   id: string;
@@ -30,60 +30,42 @@ export default function App() {
   const [games, setGames] = useState<GameProps[]>([]);
   const [gameSelected, setGameSelected] = useState<GameProps>();
 
-  const [options, setOptions] = useState({})
-  const [sliderRef, slider] = useKeenSlider(options)
-
-  const settings: SliderProps = {
-    spaceBetween: 12,
-    slidesPerView: 1.5,
-    /* navigation: true, */
+  const [isLoading, setIsLoading] = useState(true);
+  const [ref] = useKeenSlider<HTMLDivElement>({
+    initial: 0,
+    mode: 'free',
     loop: false,
     breakpoints: {
-      768: {
-        slidesPerView: 3.5,
+      "(min-width: 200px)": {
+        slides: { perView: 2.2, spacing: 5 },
       },
-      1024: {
-        slidesPerView: 6.5,
+      "(min-width: 400px)": {
+        slides: { perView: 2.5, spacing: 5 },
+      },
+      "(min-width: 600px)": {
+        slides: { perView: 3.5, spacing: 5 },
+      },
+      "(min-width: 800px)": {
+        slides: { perView: 4.5, spacing: 5 },
+      },
+      "(min-width: 1000px)": {
+        slides: { perView: 5.5, spacing: 10 },
+      },
+      "(min-width: 1200px)": {
+        slides: { perView: 6.5, spacing: 10 },
       },
     },
-  }
+    slides: { perView: 1 },
+  })
 
   useEffect(() => {
-    axios('http://localhost:3333/games').then(res => {
-      setGames(res.data)
-    })
-  }, [])
+    async function loadData() {
+      await axios('http://localhost:3333/games')
+        .then(res => { setGames(res.data) })
+        .finally(() => setIsLoading(false));
+    }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setOptions({
-        slidesPerView: 1,
-        mode: "free",
-        centered: true,
-        loop: false,
-        initial: 0,
-        breakpoints: {
-          "(min-width: 200px)": {
-            slides: { perView: 2.2, spacing: 5 },
-          },
-          "(min-width: 400px)": {
-            slides: { perView: 2.5, spacing: 5 },
-          },
-          "(min-width: 600px)": {
-            slides: { perView: 3.5, spacing: 5 },
-          },
-          "(min-width: 800px)": {
-            slides: { perView: 4.5, spacing: 5 },
-          },
-          "(min-width: 1000px)": {
-            slides: { perView: 5.5, spacing: 10 },
-          },
-          "(min-width: 1200px)": {
-            slides: { perView: 6.5, spacing: 10 },
-          },
-        },
-      })
-    }, 10)
+    loadData();
   }, [])
 
   return (
@@ -95,41 +77,33 @@ export default function App() {
           Seu <span className="text-transparent bg-nlw-gradient bg-clip-text">duo</span> está aqui
         </h1>
 
-        {/* <div className='mt-16 max-w-sm md:max-w-3xl lg:max-w-7xl '>
-          <Slider settings={settings}>
-            {games.map((game) => (
-              <Slide key={game.title}>
-                <GameBanner
-                  key={game.id}
-                  title={game.title}
-                  bannerUrl={game.bannerUrl}
-                  adsCount={game._count.ads}
-                  handleClick={() => setGameSelected(game)}
-                />
-              </Slide>
-            ))}
-          </Slider>
-        </div> */}
-
-        {/* grid grid-cols-6 gap-6 mt-16 */}
-
-        <div ref={sliderRef} className="keen-slider mt-8">
-          {
-            games.map((game) => {
-              return (
-                <div key={game.id} className="keen-slider__slide">
-                  <GameBanner
-                    key={game.id}
-                    title={game.title}
-                    bannerUrl={game.bannerUrl}
-                    adsCount={game._count.ads}
-                    handleClick={() => setGameSelected(game)}
-                  />
-                </div>
-              )
-            })
-          }
-        </div>
+        {
+          isLoading
+            ? (
+              <div>
+                <ReactLoading type={'spinningBubbles'} color={'#8B5CF6'} className='my-10 ' />
+              </div>
+            )
+            : (
+              <div ref={ref} className="keen-slider mt-8">
+                {
+                  games.map((game) => {
+                    return (
+                      <div key={game.id} className="keen-slider__slide">
+                        <GameBanner
+                          key={game.id}
+                          title={game.title}
+                          bannerUrl={game.bannerUrl}
+                          adsCount={game._count.ads}
+                          handleClick={() => setGameSelected(game)}
+                        />
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            )
+        }
 
         <Dialog.Root
           open={!!gameSelected?.id}
