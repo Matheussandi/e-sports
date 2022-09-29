@@ -4,8 +4,6 @@ import axios from 'axios';
 
 import * as Dialog from '@radix-ui/react-dialog';
 
-import { Slider, SliderProps, Slide } from './Slider';
-
 import { LabelValue } from './LabelValue';
 import { X } from 'phosphor-react';
 import { GameProps } from '../App';
@@ -28,21 +26,6 @@ interface Ads {
 export function GameModal({ gameSelected }: Props) {
     const [ads, setAds] = useState<Ads[]>([]);
     const [adSelected, setAdSelected] = useState<string | null>(null);
-
-    const settings: SliderProps = {
-        spaceBetween: 0,
-        slidesPerView: 1.5,
-        /* navigation: true, */
-        loop: false,
-        breakpoints: {
-            768: {
-                slidesPerView: 1.5,
-            },
-            1024: {
-                slidesPerView: 2.5,
-            },
-        },
-    }
 
     function getGameSelected() {
         if (!gameSelected) {
@@ -84,11 +67,11 @@ export function GameModal({ gameSelected }: Props) {
     return (
         <>
             <Dialog.Portal>
-                <Dialog.Overlay className="bg-black/60 inset-0 fixed" />
+                <Dialog.Overlay className="fixed bg-black/60 inset-0" />
 
-                <Dialog.Content className="fixed bg-[#2A2634] py-4 px-8 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[360px] shadow-lg shadow-black/25 max-h-[600px] sm:w-[480] md:w-[500px]">
+                <Dialog.Content className="w-full h-full md:w-[80%] max-w-2xl md:max-h-[500px] md:h-[80%] grid md:rounded-md grid-rows-[80px_minmax(100px,_1fr)] m-auto bg-[#2a2634] shadow-2xl shadow-black/50 fixed py-6 rounded-lg px-6 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <div className="flex items-start justify-center relative">
-                        <Dialog.Title className="overflow-hidden text-lg font-black text-transparent sm:text-2xl md:text-4xl text-ellipsis bg-nlw-gradient bg-clip-text mb-4">
+                        <Dialog.Title className="overflow-hidden text-4xl font-black text-transparent md:text-ellipsis bg-nlw-gradient bg-clip-text mb-4">
                             {gameSelected?.title}
                         </Dialog.Title>
                         <div className='absolute top-0 right-0'>
@@ -98,9 +81,9 @@ export function GameModal({ gameSelected }: Props) {
                         </div>
                     </div>
 
-                    <main className="min-h-[100px] overflow-auto max-h-[500px]">
-                        <div className="flex items-center justify-center mx-3 mb-4 rounded-xl md:overflow-hidden">
-                            <div className="flex justify-center w-full h-full px-4 mx-4">
+                    <main className="min-h-[100px] grid grid-cols-[1fr] px-0 md:grid-cols-[1fr_1fr] overflow-auto">
+                        <div className="flex items-center justify-center mx-3 rounded-xl md:overflow-hidden">
+                            <div className="flex justify-center w-full h-full px-4">
                                 <img className='rounded' src={gameSelected?.bannerUrl} alt="" />
                             </div>
                         </div>
@@ -114,54 +97,52 @@ export function GameModal({ gameSelected }: Props) {
                                 </div>
                             )}
 
-                            <Slider settings={settings}>
-                                {ads.map((ad) => (
-                                    <Slide key={ad.id}>
-                                        <div key={ad.id} className={"bg-zinc-900 rounded-2xl p-2 m-1"}>
-                                            <LabelValue label="Name">
-                                                {ad.name}
-                                            </LabelValue>
+                            {
+                                ads.map((ad) => (
+                                    <div key={ad.id} className={"bg-zinc-900 rounded-2xl p-2 mt-2 mr-0 md:mt-0 mb-2 md:mr-5"}>
+                                        <LabelValue label="Name">
+                                            {ad.name}
+                                        </LabelValue>
 
-                                            <LabelValue label="Discord">
-                                                <div
-                                                    onClick={() => setAdSelected(ad.id)}
-                                                    className="flex items-center gap-3 hover:cursor-pointer"
-                                                >
-                                                    <div className="text-sm font-light">
-                                                        {ad.discord ?? "clique aqui"}
-                                                    </div>
+                                        <LabelValue label="Discord">
+                                            <div
+                                                onClick={() => setAdSelected(ad.id)}
+                                                className="flex items-center gap-3 hover:cursor-pointer"
+                                            >
+                                                <div className="text-sm font-light">
+                                                    {ad.discord ?? "clique aqui"}
                                                 </div>
-                                            </LabelValue>
+                                            </div>
+                                        </LabelValue>
 
-                                            <LabelValue label="Tempo de Jogo">
-                                                {ad.yearsPlaying > 0
-                                                    ? ad.yearsPlaying + " ano(s)"
-                                                    : "recente"}
-                                            </LabelValue>
-                                            <LabelValue label="Disponibilizade">
-                                                <div className='flex flex-col gap-2'>{ad.weekDays.join(',')}</div>
-                                                <div className="text-sm font-normal">
-                                                    {ad.hourStart}
-                                                    {" "}
-                                                    -
-                                                    {" "}
-                                                    {ad.hourEnd}
-                                                </div>
-                                            </LabelValue>
-                                            <LabelValue label="Chamada de áudio">
-                                                <span
-                                                    className={`${ad.useVoiceChannel
-                                                        ? "text-green-700"
-                                                        : "text-red-700"
-                                                        }`}
-                                                >
-                                                    {ad.useVoiceChannel ? "Sim" : "Não"}
-                                                </span>
-                                            </LabelValue>
-                                        </div>
-                                    </Slide>
-                                ))}
-                            </Slider>
+                                        <LabelValue label="Tempo de Jogo">
+                                            {ad.yearsPlaying > 0
+                                                ? ad.yearsPlaying + " ano(s)"
+                                                : "recente"}
+                                        </LabelValue>
+                                        <LabelValue label="Disponibilizade">
+                                            <div className='flex flex-col gap-2'>{ad.weekDays.join(',')}</div>
+                                            <div className="text-sm font-normal">
+                                                {ad.hourStart}
+                                                {" "}
+                                                -
+                                                {" "}
+                                                {ad.hourEnd}
+                                            </div>
+                                        </LabelValue>
+                                        <LabelValue label="Chamada de áudio">
+                                            <span
+                                                className={`${ad.useVoiceChannel
+                                                    ? "text-green-700"
+                                                    : "text-red-700"
+                                                    }`}
+                                            >
+                                                {ad.useVoiceChannel ? "Sim" : "Não"}
+                                            </span>
+                                        </LabelValue>
+                                    </div>
+                                ))
+                            }
                         </div>
                     </main>
 
