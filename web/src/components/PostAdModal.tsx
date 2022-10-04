@@ -67,6 +67,8 @@ export function PostAdModal() {
             return;
         }
 
+        console.log(data.gameId)
+
         try {
             await axios.post(`http://localhost:3333/games/${data.game}/ads`, {
                 name: data.name,
@@ -80,10 +82,12 @@ export function PostAdModal() {
 
             alert("Anúncio criado com sucesso!");
         } catch (err) {
-            // console.log(err);
+            console.log(err);
             alert("Error ao criar o anúncio.");
         }
     }
+
+
 
     return (
         <>
@@ -105,37 +109,39 @@ export function PostAdModal() {
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="game" className="font-semibold">Qual o game?</Label>
                             <Select.Root name="game">
-                                <Select.Trigger className="bg-zinc-900 py-3 px-4 rounded text-sm flex justify-between">
-                                    <Select.Value className="text-zinc-500" placeholder="Selecione o game que deseja jogar" />
+                                <Select.Trigger className="bg-zinc-900 py-3 px-4 rounded text-sm flex justify-between" aria-label="Jogo">
+                                    <Select.Value className="text-zinc-500" placeholder="Selecione o jogo que deseja jogar" />
                                     <CaretDown size={20} />
+                                </Select.Trigger>
 
-                                    <Select.Content className="bg-zinc-900 py-3 px-6 rounded text-sm mt-6 -ml-4 flex text-start">
-                                        {
-                                            games.map(game => {
-                                                return (
-                                                    <Select.Item key={game.id} value={game.id}>
+                                <Select.Portal>
+                                    <Select.Content className="bg-zinc-900 rounded text-sm text-start py-3 px-6">
+                                        <Select.Viewport className='text-white'>
+                                            {
+                                                games.map(game => (
+                                                    <Select.Item className="focus:bg-violet-500 outline-none" key={game.id} value={game.id}>
                                                         <Select.ItemText>{game.title}</Select.ItemText>
                                                     </Select.Item>
-                                                )
-                                            })
-                                        }
+                                                ))
+                                            }
+                                        </Select.Viewport>
                                     </Select.Content>
-                                </Select.Trigger>
+                                </Select.Portal>
                             </Select.Root>
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="name">Seu nome ou nickname</label>
+                            <Label htmlFor="name">Seu nome ou nickname</Label>
                             <Input name="name" id="name" placeholder="Como te chamam dentro do game?" />
                         </div>
 
                         <div className="grid grid-cols-2 gap-6">
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="yearsPlaying">Joga há quantos anos?</label>
+                                <Label htmlFor="yearsPlaying">Joga há quantos anos?</Label>
                                 <Input name="yearsPlaying" id="yearsPlaying" type="number" placeholder="Tudo bem ser ZERO" />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="discord">Qual seu Discord?</label>
+                                <Label htmlFor="discord">Qual seu Discord?</Label>
                                 <Input
                                     name="discord"
                                     id="discord"
@@ -150,7 +156,7 @@ export function PostAdModal() {
 
                         <div className="flex">
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="weekDays">Quando costuma jogar?</label>
+                                <Label htmlFor="weekDays">Quando costuma jogar?</Label>
                                 <ToggleGroup.Root
                                     type="multiple"
                                     className="flex gap-2 center"
@@ -216,14 +222,14 @@ export function PostAdModal() {
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 flex-1">
-                            <label htmlFor="discord">Qual horário do dia?</label>
+                            <Label htmlFor="discord">Qual horário do dia?</Label>
                             <div className="grid grid-cols-2 gap-2">
                                 <Input name="hourStart" id="hourStart" type="time" placeholder="De" />
                                 <Input name="hourEnd" id="hourEnd" type="time" placeholder="Até" />
                             </div>
                         </div>
 
-                        <label className="mt-2 flex gap-2 items-center text-sm">
+                        <Label className="mt-2 flex gap-2 items-center text-sm">
                             <Checkbox.Root
                                 checked={useVoiceChannel}
                                 onCheckedChange={(checked) => {
@@ -238,7 +244,7 @@ export function PostAdModal() {
                                 </Checkbox.Indicator>
                             </Checkbox.Root>
                             Costumo me conectar ao chat de voz
-                        </label>
+                        </Label>
 
                         <footer className="mt-4 flex justify-end gap-4">
                             <Dialog.Close
