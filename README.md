@@ -50,10 +50,12 @@
  
 - [Expo](https://expo.dev/)
  
- # ⚠️ Antes de iniciar o projeto ⚠️
+# ⚠️ Antes de iniciar o projeto ⚠️
+
+Instale as dependência dentro das pastas server, web e mobile.
  
 ### :file_folder: Pasta server
-Crie o arquivo .env e coloque como valor na variável DATABASE_URL a URL do seu banco de dados e execute as migrations do prisma utilizando `npx prisma migrate dev`, ou somente utilize o banco de dados sqlite que deixei pronto no .env.example.
+Renomeie o arquivo .env.example apenas para .env, descomente a primeira linha de código apagando o caractere # e tente executar o projeto. Caso dê erro execute `npx prisma generate` para restabelecer o link entre o arquivo schema.prisma e env.
 
 ### :file_folder: Pasta mobile
 Substitua todos os lugares que estão escrito `localhost` para o ip da sua máquina.
