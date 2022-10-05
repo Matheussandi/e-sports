@@ -52,10 +52,10 @@
  
 # ⚠️ Antes de iniciar o projeto ⚠️
 
-Instale as dependência dentro das pastas server, web e mobile.
+Primeiramente instale as dependência dentro das pastas server, web e mobile, após isso realize as modificações abaixo.
  
 ### :file_folder: Pasta server
-Renomeie o arquivo .env.example apenas para .env, descomente a primeira linha de código apagando o caractere # e tente executar o projeto. Caso dê erro execute `npx prisma generate` para restabelecer o link entre o arquivo schema.prisma e env.
+Renomeie o arquivo .env.example apenas para .env, descomente a primeira linha de código removendo o caractere #. Por fim, execute o código `npx prisma generate` para restabelecer o link entre o arquivo schema.prisma e env.
 
 ### :file_folder: Pasta mobile
 Substitua todos os lugares que estão escrito `localhost` para o ip da sua máquina.
