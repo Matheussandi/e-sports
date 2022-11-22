@@ -5,12 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-  },
-  header: {
-    width: '100%',
-    alignItems: 'flex-end',
-    paddingRight: 16, 
-    paddingTop: 16,
+    padding: 32,
   },
   logo: {
     width: 214,
@@ -18,12 +13,9 @@ export const styles = StyleSheet.create({
     marginTop: 74,
     marginBottom: 48,
   },
-  contentList: {
-    paddingLeft: 24,
-  },
-  button:{
-    width: '50%',
-    height: 36,
+  button: {
+    width: '100%',
+    height: 50,
     borderRadius: 6,
     backgroundColor: THEME.COLORS.PRIMARY,
     flexDirection: 'row',

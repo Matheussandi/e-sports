@@ -1,9 +1,16 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ScrollView
+} from 'react-native';
 
-import { CalendarPlus } from 'phosphor-react-native';
+import { CalendarPlus, SignOut } from 'phosphor-react-native';
 
 import logoImg from '../../assets/logo-nlw-esports.png';
 
@@ -27,6 +34,10 @@ export function Home() {
     navigation.navigate('PostAd');
   }
 
+  function handleLogout() {
+    navigation.navigate('SignIn');
+  }
+
   useEffect(() => {
     // colocar o ip da máquina no localhost
     fetch('http://localhost:3333/games')
@@ -38,45 +49,56 @@ export function Home() {
 
   return (
     <Background>
-      <SafeAreaView style={styles.container}>
-        <Image
-          source={logoImg}
-          style={styles.logo}
-        />
+      <ScrollView>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={handleLogout}>
+              <SignOut
+                color={THEME.COLORS.TEXT}
+                size={24}
+              />
 
-        <Heading
-          title="Encontre sua dupla"
-          subtitle="Selecione o game que deseja jogar"
-        />
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleOpenPostAd}
-        >
-          <CalendarPlus
-            color={THEME.COLORS.TEXT}
-            size={20}
+            </TouchableOpacity>
+          </View>
+          <Image
+            source={logoImg}
+            style={styles.logo}
           />
 
-          <Text style={styles.buttonText}>
-            Publicar anúncio
-          </Text>
-        </TouchableOpacity>
+          <Heading
+            title="Encontre sua dupla"
+            subtitle="Selecione o game que deseja jogar"
+          />
 
-        <FlatList
-          data={games}
-          keyExtractor={item => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.contentList}
-          renderItem={({ item }) => (
-            <GameCard
-              data={item}
-              onPress={() => handleOpenGame(item)}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleOpenPostAd}
+          >
+            <CalendarPlus
+              color={THEME.COLORS.TEXT}
+              size={20}
             />
-          )}
-        />
-      </SafeAreaView>
+
+            <Text style={styles.buttonText}>
+              Publicar anúncio
+            </Text>
+          </TouchableOpacity>
+
+          <FlatList
+            data={games}
+            keyExtractor={item => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.contentList}
+            renderItem={({ item }) => (
+              <GameCard
+                data={item}
+                onPress={() => handleOpenGame(item)}
+              />
+            )}
+          />
+        </SafeAreaView>
+      </ScrollView>
     </Background>
   );
 }

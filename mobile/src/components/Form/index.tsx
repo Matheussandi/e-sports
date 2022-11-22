@@ -57,7 +57,7 @@ export function Form() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    axios('http://192.168.29.2:3333/games').then(res => {
+    axios('http://localhost:3333/games').then(res => {
       setGames(res.data);
     })
   }, [])
@@ -73,7 +73,7 @@ export function Form() {
 
     if (data !== undefined) {
       try {
-        await axios.post(`http://192.168.29.2:3333/games/${selectedGame}/ads`, {
+        await axios.post(`http://localhost:3333/games/${selectedGame}/ads`, {
           name: data.name,
           yearsPlaying: Number(data.yearsPlaying),
           discord: data.userDiscord,
