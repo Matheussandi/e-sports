@@ -20,33 +20,7 @@ import { getPushNotificationToken } from './src/services/getPushNotificationToke
 import * as Notifications from 'expo-notifications';
 import './src/services/notificationConfigs';
 
-
-
 export default function App() {
-  const getNotificationListener = useRef<Subscription>();
-  const responseNotificationListener = useRef<Subscription>();
-  
-  useEffect(() => {
-    getPushNotificationToken();
-  });
-
-  useEffect(() => {
-    getNotificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log(notification);
-    });
-
-    responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
-
-    return () => {
-      if (getNotificationListener.current && responseNotificationListener.current) {
-        Notifications.removeNotificationSubscription(getNotificationListener.current);
-        Notifications.removeNotificationSubscription(responseNotificationListener.current);
-      }
-    }
-  },[])
-
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_600SemiBold,

@@ -6,7 +6,6 @@ import { Text } from 'react-native';
 
 import { styles } from './styles';
 
-
 type Props = InputProps & {
     control: Control<any>;
     name: string;

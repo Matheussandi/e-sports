@@ -15,7 +15,6 @@ import { THEME } from '../../theme';
 import { CheckBox } from '../CheckBox';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import { Select } from '../Select';
 
 interface IGame {
   id: string;
@@ -53,7 +52,6 @@ export function Form() {
     resolver: yupResolver(schema)
   });
 
-
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -67,10 +65,6 @@ export function Form() {
   }
 
   async function handlePostAd(data: FormData) {
-    console.log(selectedGame)
-    console.log(useVoiceChannel)
-    console.log(data);
-
     if (data !== undefined) {
       try {
         await axios.post(`http://localhost:3333/games/${selectedGame}/ads`, {
@@ -109,9 +103,6 @@ export function Form() {
           })
         }
       </Picker>
-      {/*       <View>
-        <Text style={{ color: '#FFF' }}>Jogo selecionado foi: {selectedGame}</Text>
-      </View> */}
 
       <Text style={styles.title}>Seu nome ou nickname</Text>
       <ControlledInput
@@ -167,7 +158,6 @@ export function Form() {
       />
 
       <CheckBox
-        key={undefined}
         options={optionsIndivudual}
         onChange={(op: number) => op == 1
           ? setUseVoiceChannel(true)

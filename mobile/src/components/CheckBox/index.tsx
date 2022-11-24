@@ -1,9 +1,9 @@
-import { Check } from 'phosphor-react-native';
-import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+
+import { Check } from 'phosphor-react-native';
 
 import { styles } from './styles';
-
 
 interface OptionsProps {
     text: string;
@@ -27,7 +27,6 @@ export function CheckBox({ options, onChange }: Props) {
         } else {
             arrSelected.push(id);
         }
-
         setSelected(arrSelected);
     }
 
@@ -36,11 +35,11 @@ export function CheckBox({ options, onChange }: Props) {
     return (
         <View>
             {options.map((op, index) => (
-                <View style={styles.container}>
+                <View key={op.id} style={styles.container}>
                     <TouchableOpacity
                         style={styles.touchable}
                         onPress={() => toggle(op.id)}
-                    >
+                        >
                         {
                             selected.findIndex(i => i === op.id) !== -1
                             ? <Check size={20} color={"#3EDB93"} />
