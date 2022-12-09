@@ -8,9 +8,9 @@ export declare global {
     namespace ReactNavigation {
         interface RootParamList {
             SignIn: undefined;
-            Home: undefined;
+            Home: AuthResponse;
             Game: GameParams;
-            PostAd: undefined;
+            PostAd: AuthResponse;
         }
     }
 }

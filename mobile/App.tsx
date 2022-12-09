@@ -11,8 +11,6 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 
-import { Subscription } from 'expo-modules-core';
-
 import { Background } from './src/components/Background';
 import { Loading } from './src/components/Loading';
 

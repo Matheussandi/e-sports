@@ -8,9 +8,18 @@ export const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     paddingRight: 16, 
     paddingTop: 16,
+  },
+  profile: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+
+    marginLeft: 16,
   },
   logo: {
     width: 214,

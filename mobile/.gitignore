@@ -15,3 +15,7 @@ web-build/
 
 # GitHub
 .env
+
+# google analytics
+eas.json
+google-services.json

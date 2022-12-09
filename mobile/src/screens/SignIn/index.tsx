@@ -1,6 +1,9 @@
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Linking } from 'react-native';
+import React from 'react';
+
 import * as AuthSession from 'expo-auth-session';
 
 import { Background } from '../../components/Background';
@@ -18,7 +21,7 @@ import { DiscordLogo } from 'phosphor-react-native';
 import { THEME } from '../../theme';
 import { styles } from './styles';
 
-type AuthResponse = {
+export type AuthResponse = {
   params: {
     access_token: string;
   };
@@ -33,9 +36,11 @@ export function SignIn() {
       const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
 
       const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
-      
+
       if (params.access_token) {
-        navigation.navigate('Home');
+        navigation.navigate('Home', {
+          params: params.access_token,
+        });
       } else {
         navigation.navigate('SignIn');
       }
@@ -70,6 +75,13 @@ export function SignIn() {
             Entrar com Discord
           </Text>
         </TouchableOpacity>
+
+        <View style={styles.footer}>
+          <Text style={{ color: THEME.COLORS.TEXT, borderBottomWidth: 1, borderBottomColor: THEME.COLORS.TEXT }}
+            onPress={() => Linking.openURL('https://diretos-e-sports.vercel.app/')}>
+            Política de Privacidade
+          </Text>
+        </View>
       </SafeAreaView>
     </Background>
   );

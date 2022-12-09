@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "eSports - Encontre seu duo",
-    "slug": "eSports",
+    "name": "eSports",
+    "slug": "esports",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "eSports",
+    "scheme": "esports",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -33,6 +33,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6b926e6d-11c8-4f07-ab68-ea410b732c1a"
+      }
     }
   }
 }

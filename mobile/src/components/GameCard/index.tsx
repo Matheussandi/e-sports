@@ -16,7 +16,7 @@ export interface IGameCards {
     title: string;
     bannerUrl: string;
     _count: {
-      ads: number,
+        ads: number,
     }
 }
 
@@ -29,7 +29,7 @@ export function GameCard({ data, ...rest }: Props) {
         <TouchableOpacity style={styles.container} {...rest}>
             <ImageBackground
                 style={styles.cover}
-                source={{uri: data.bannerUrl}}
+                source={{ uri: data.bannerUrl }}
             >
 
                 <LinearGradient
@@ -42,7 +42,6 @@ export function GameCard({ data, ...rest }: Props) {
                     <Text style={styles.ads}>
                         {data._count.ads} anúncios
                     </Text>
-
                 </LinearGradient>
             </ImageBackground>
         </TouchableOpacity>

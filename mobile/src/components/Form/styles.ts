@@ -4,8 +4,8 @@ import { THEME } from '../../theme';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2A2634', 
-    padding: 16, 
+    backgroundColor: '#2A2634',
+    padding: 16,
     width: '100%',
     maxHeight: '100%',
 
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
   time: {
     flexDirection: 'row',
   },
-  button:{
+  button: {
     width: '100%',
     height: 36,
     borderRadius: 6,
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonCancel:{
+  buttonCancel: {
     width: '100%',
     height: 36,
     borderRadius: 6,
@@ -54,5 +54,36 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 4,
-  }
+  },
+  touchable: {
+    height: 26,
+    width: 26,
+    borderRadius: 4,
+    backgroundColor: '#18181B',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: THEME.COLORS.OVERLAY,
+  },
+  modalContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    width: 311,
+    backgroundColor: THEME.COLORS.SHAPE,
+  },
+  closeIcon: {
+    alignSelf: 'flex-end',
+    margin: 16,
+  },
+  modalText: {
+    color: THEME.COLORS.TEXT,
+    fontSize: THEME.FONT_SIZE.MD,
+    fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
+    marginBottom: 24,
+  },
 });

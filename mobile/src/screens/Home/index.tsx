@@ -1,5 +1,5 @@
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   View,
@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 
 import { CalendarPlus, SignOut } from 'phosphor-react-native';
@@ -21,37 +21,75 @@ import { Heading } from '../../components/Heading';
 import { styles } from './styles';
 import { THEME } from '../../theme';
 
+import { AuthResponse } from '../SignIn';
+
+export interface ProfileProps {
+  id: string;
+  avatar: string;
+}
+
 export function Home() {
+  const [profile, setProfile] = useState<ProfileProps>({
+    id: '',
+    avatar: ''
+  });
   const [games, setGames] = useState<IGameCards[]>([]);
 
   const navigation = useNavigation();
+  const route = useRoute();
+  const authDiscord = route.params as AuthResponse;
 
   function handleOpenGame({ id, title, bannerUrl }: IGameCards) {
     navigation.navigate('Game', { id, title, bannerUrl });
   }
 
   function handleOpenPostAd() {
-    navigation.navigate('PostAd');
+    navigation.navigate('PostAd', {
+      params: authDiscord.params
+    });
   }
 
   function handleLogout() {
     navigation.navigate('SignIn');
   }
 
-  useEffect(() => {
-    // colocar o ip da máquina no localhost
-    fetch('http://localhost:3333/games')
+  async function fetchGame() {
+    await fetch('http://localhost:3333/games')
       .then(response => response.json())
-      .then(data => {
-        setGames(data)
-      })
-  })
+      .then(data => { setGames(data) })
+  }
+
+  async function fetchProfile() {
+    await fetch('https://discord.com/api/users/@me', {
+      headers: {
+        'authorization': `Bearer ${authDiscord.params}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => setProfile(data))
+  }
+
+
+  useEffect(() => {
+    fetchGame()
+    fetchProfile()
+  }, [])
+
+  const image = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png`
+  const image2 = `https://cdn.discordapp.com/embed/avatars/0.png`
 
   return (
     <Background>
       <ScrollView>
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
+
+            {
+              profile.avatar !== null
+                ? <Image source={{ uri: image }} style={styles.profile} />
+                : <Image source={{ uri: image2 }} style={styles.profile} />
+            }
+
             <TouchableOpacity onPress={handleLogout}>
               <SignOut
                 color={THEME.COLORS.TEXT}

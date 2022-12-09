@@ -29,5 +29,9 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
     fontSize: THEME.FONT_SIZE.SM,
     marginLeft: 8,
-  }
+  },
+  footer: {
+    flex: 1, 
+    justifyContent: 'flex-end',
+  },
 });

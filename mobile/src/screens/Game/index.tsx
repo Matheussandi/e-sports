@@ -28,7 +28,6 @@ export function Game() {
     navigation.goBack();
   }
 
-  // colocar ip da sua máquina no localhost
   async function getDiscordUser(adsId: string) {
     fetch(`http://localhost:3333/ads/${adsId}/discord`)
       .then(response => response.json())
@@ -39,7 +38,7 @@ export function Game() {
     fetch(`http://localhost:3333/games/${game.id}/ads`)
       .then(response => response.json())
       .then(data => { setDuos(data) })
-  })
+  }, [])
 
   return (
     <Background>
