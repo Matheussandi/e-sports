@@ -14,11 +14,7 @@
   <br>
 </p>
 
-<p align="center">
-
-</p>
-
-Construído através do deste [layout](https://www.figma.com/file/8yPqlNjGBpJ7sDSEma7Jm4/NLW-eSports-(Community)?node-id=0%3A1&t=7sZiMgKJOwNzPyWG-1).
+Construído através deste [layout](https://www.figma.com/file/8yPqlNjGBpJ7sDSEma7Jm4/NLW-eSports-(Community)?node-id=0%3A1&t=7sZiMgKJOwNzPyWG-1).
 
 # :pushpin: Recursos
 
@@ -65,11 +61,10 @@ npm install
 
 // Excecuta aplicação web e server
 npm run dev
-
 // Excecuta aplicação mobile
 expo start
 ```
- 
+
 # 📄 Licença
 
 Esse projeto está sob a licença MIT.
