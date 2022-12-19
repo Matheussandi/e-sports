@@ -158,7 +158,7 @@ export function Form({ username, discriminator }: IDiscordID) {
       />
 
 
-      <Text style={styles.title}>Já há quantos anos?</Text>
+      <Text style={styles.title}>Joga há quantos anos?</Text>
       <ControlledInput
         name='yearsPlaying'
         keyboardType='numeric'

@@ -2,7 +2,7 @@
   "expo": {
     "name": "eSports",
     "slug": "esports",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "esports",
@@ -20,12 +20,12 @@
     ],
     "ios": {
       "bundleIdentifier": "com.eSports",
-      "buildNumber": "1.1.0",
+      "buildNumber": "1.2.0",
       "supportsTablet": true
     },
     "android": {
       "package": "com.eSports",
-      "versionCode": 1.1,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#121214"
