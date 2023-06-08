@@ -3,16 +3,10 @@
 <p align="justify">Aplicação para você encontrar seu duo, selecionando um jogo específico e escolhendo o jogador ideal para se divertir, ou então você tem a possibilidade de criar um anúncio e esperar que alguém te chame pelo discord.</p>
 
 ### <p align="center">Web</p>
-<p align="center">
-  <video src="https://user-images.githubusercontent.com/29473781/193426386-400433fe-a110-4f21-b149-01581362f01e.mp4"/>
-  <br>
-</p>
+https://user-images.githubusercontent.com/29473781/193426386-400433fe-a110-4f21-b149-01581362f01e.mp4
 
 ### <p align="center">Mobile</p>
-<p align="center">
-  <video src="https://user-images.githubusercontent.com/29473781/208524574-00c3ce38-138f-4dc7-8138-79c2fba70aca.mp4"/>
-  <br>
-</p>
+https://user-images.githubusercontent.com/29473781/208524574-00c3ce38-138f-4dc7-8138-79c2fba70aca.mp4
 
 Construído através deste [layout](https://www.figma.com/file/8yPqlNjGBpJ7sDSEma7Jm4/NLW-eSports-(Community)?node-id=0%3A1&t=7sZiMgKJOwNzPyWG-1).
 
